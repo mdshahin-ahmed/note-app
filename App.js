@@ -3,20 +3,19 @@ import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <SafeAreaView>
-        <Text>Alhamdulillah</Text>
+    <View style={styles.container}>
+      <SafeAreaView style={{ marginTop: 30 }}>
+        <Text>Alhamdulillah!</Text>
+        <Text>I am there</Text>
       </SafeAreaView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    // alignItems: "center",
-    // justifyContent: "center",
+    // backgroundColor: "tomato",
   },
   main: {
     backgroundColor: "orange",
