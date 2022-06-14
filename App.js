@@ -8,6 +8,8 @@ import SignUp from "./src/screens/SignUp";
 import Edit from "./src/screens/Edit";
 import Create from "./src/screens/Create";
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBHZpT18a-dootHIIG3P0CoeUpt7HTgw_w",
@@ -19,6 +21,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+export const auth = getAuth();
+export const db = getFirestore(app);
 
 const AppTheme = {
   ...DefaultTheme,

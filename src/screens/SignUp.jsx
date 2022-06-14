@@ -3,21 +3,17 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-// import { initializeApp } from "firebase/app";
-
-// const firebaseConfig = {
-//   apiKey: process.env.REACT_APP_API_KEY,
-//   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-//   projectId: process.env.REACT_APP_PROJECT_ID,
-//   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-//   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-//   appId: process.env.REACT_APP_APP_ID,
-// };
-
-// const app = initializeApp(firebaseConfig);
-
-const auth = getAuth();
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../App";
+import {
+  addDoc,
+  collection,
+  getDoc,
+  doc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 
 const genderOption = ["Male", "Female"];
 export default function SignUp({ navigation }) {
@@ -26,18 +22,28 @@ export default function SignUp({ navigation }) {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
-  const singUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
+  const singUp = async () => {
+    try {
+      // 1. create user
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // 2. add user profile to database
+      await addDoc(collection(db, "users"), {
+        name: name,
+        email: email,
+        age: age,
+        gender: gender,
+        uid: result.user.uid,
       });
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // 3. navigate to authenticated screen
   };
   return (
     <SafeAreaView style={{ paddingHorizontal: 16, flex: 1 }}>
